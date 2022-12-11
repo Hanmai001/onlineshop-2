@@ -1,9 +1,3 @@
-//import db from '../config/connectDB';
-//const db = require('../config/connectDb');
-// get the client
-import mysql from 'mysql2/promise';
-import { createPool } from 'mysql2/promise';
-
 // const db = { connection: null };
 
 // (async () => {
@@ -16,6 +10,7 @@ import { createPool } from 'mysql2/promise';
 //     });
 //     console.log('Database connected!');
 // })();
+import {createPool} from 'mysql2/promise';
 
 const db = createPool({
     host: process.env.DB_HOST || 'localhost',
@@ -24,6 +19,7 @@ const db = createPool({
     password: process.env.DB_PASSWORD || 'root',
     port: process.env.DB_PORT || 3306
 })
+
 let getAllProduct = async () => {
     const result = await db.query('SELECT pd.*, pt.LINK FROM product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1');
     return result[0];
@@ -182,7 +178,7 @@ let getDetailProduct = async (id) => {
 }
 let getRelatedProducts = async (id) => {
     const result = await db.query('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
-    console.log(result[0]);
+    //console.log(result[0]);
     return result[0];
 
 }

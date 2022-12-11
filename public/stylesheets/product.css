@@ -31,7 +31,9 @@ html {
     background: linear-gradient(-180deg, #f53d2d, #f63);
     transition: transform .2s cubic-bezier(.4, 0, .2, 1);
 }
-
+.product-info .user-option>img {
+    border-radius: 50%;
+}
 .product-info ul {
     list-style-type: none;
 }
@@ -77,7 +79,13 @@ html {
 .product-info .input-search input:focus {
     outline: none;
 }
-
+.product-info .input-search button {
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    right: 11.5%;
+    top: 3px;
+}
 .product-info .input-search i {
     right: 12.5%;
     top: 6px;

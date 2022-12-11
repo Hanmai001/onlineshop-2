@@ -31,7 +31,9 @@ html {
     background: linear-gradient(-180deg, #f53d2d, #f63);
     transition: transform .2s cubic-bezier(.4, 0, .2, 1);
 }
-
+.list-order .user-option>img {
+    border-radius: 50%;
+}
 .list-order ul {
     list-style-type: none;
     padding-left: 0 !important;
@@ -118,7 +120,13 @@ html {
 .list-order .input-search input:focus {
     outline: none;
 }
-
+.list-order .input-search button {
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    right: 11.5%;
+    top: 3px;
+}
 .list-order .input-search i {
     right: 12.5%;
     top: 6px;

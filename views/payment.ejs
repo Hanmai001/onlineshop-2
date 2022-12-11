@@ -22,14 +22,14 @@
                     <i class="fa-brands fa-facebook mx-2 text-white fs-5"></i>
                     <i class="fa-brands fa-instagram text-white fs-5"></i>
                 </div>
-                <div class="col-6 text-end">
-                    <img src="/images/user.png" alt="" width="30px" height="30px">
+                <div class="col-6 text-end user-option">
+                    <img src="<%= user.ava %>" alt="" width="30px" height="30px">
                     <ul class="text-white ms-2 nav-profile">
-                        <li class="js-option-profile">Harikohan
+                        <li class="js-option-profile"><%= user.username %>
                             <ul class="subnav text-black js-subnav">
                                 <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
                                 <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
-                                <li><a href="#">Đăng xuất</a></li>
+                                <li><a href="/logout">Đăng xuất</a></li>
                             </ul>
                         </li>
 

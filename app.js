@@ -2,6 +2,11 @@ const express = require('express');
 import initUserRoute from './routes/user';
 import initAdminRoute from './routes/admin';
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const passport = require('./passport');
+const flash = require('connect-flash');
 
 require('dotenv').config();
 
@@ -17,6 +22,25 @@ app.set("view engine", "ejs");
 //Cho thg express bt tìm file ejs ở đâu
 //Tức là các file ejs phải viết trong thư mục view engine này
 app.set("views", "./views");
+
+//middleware sử dụng kịch bản Passport, lấy thông tin user rồi gắn vào req.user
+app.use(session({
+    secret: 'very secret keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+//middleware giúp gắn kịch bản local vào route
+app.use(passport.authenticate('session'));
+app.use(logger('dev'));
+app.use(cookieParser());
+
+app.use(function (req, res, next) {
+    res.locals.user = req.user;
+    next();
+});
 
 initUserRoute(app);
 initAdminRoute(app);

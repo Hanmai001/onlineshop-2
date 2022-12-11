@@ -1,15 +1,16 @@
 import express from "express";
 import adminControllers from '../controllers/adminControllers';
-let router = express.Router();
+import authController from '../controllers/authController';
+const router = express.Router();
 
 const initAdminRoute = (app) => {
-    router.get('/static', adminControllers.getHomePage);
-    router.get('/adminProfile', adminControllers.getAdminProfile);
-    router.get('/OdersManage', adminControllers.getOdersManage);
-    router.get('/UsersManage', adminControllers.getUsersManage);
-    router.get('/OriginManage', adminControllers.getOriginManage);
-    router.get('/ProductManage', adminControllers.getProductManage);
-    router.get('/TypeManage', adminControllers.getTypeManage);
+    router.get('/static', authController.isLoggedAdmin, adminControllers.getHomePage);
+    router.get('/adminProfile', authController.isLoggedAdmin, adminControllers.getAdminProfile);
+    router.get('/OdersManage', authController.isLoggedAdmin, adminControllers.getOdersManage);
+    router.get('/UsersManage', authController.isLoggedAdmin, adminControllers.getUsersManage);
+    router.get('/OriginManage', authController.isLoggedAdmin, adminControllers.getOriginManage);
+    router.get('/ProductManage', authController.isLoggedAdmin, adminControllers.getProductManage);
+    router.get('/TypeManage', authController.isLoggedAdmin, adminControllers.getTypeManage);
 
     return app.use('/', router)
 }

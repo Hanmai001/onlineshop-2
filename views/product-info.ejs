@@ -16,49 +16,58 @@
 <body>
     <!-- Block Element Modifier -->
     <div class="product-info">
-        <header class="header row">
-            <div class="row pt-2">
-                <div class="col-6">
-                    <span class="ms-5 text-white">Kết nối</span>
-                    <i class="fa-brands fa-facebook mx-2 text-white fs-5"></i>
-                    <i class="fa-brands fa-instagram text-white fs-5"></i>
-                </div>
-                <!-- <ul class="col-6 text-end">
-                    <li id="register-item" class="text-white me-3">Đăng kí</li>
-                    <li id="login-item" class="text-white">Đăng nhập</li>
-                </ul> -->
-                <div class="col-6 text-end">
-                    <img src="/images/user.png" alt="" width="30px" height="30px">
-                    <ul class="text-white ms-2 nav-profile">
-                        <li class="js-option-profile">Harikohan
-                            <ul class="subnav text-black js-subnav">
-                                <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
-                                <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
-                                <li><a href="#">Đăng xuất</a></li>
+        <form action="/"  method="get">
+            <header class="header row">
+                <div class="row pt-2">
+                    <div class="col-6">
+                        <span class="ms-5 text-white">Kết nối</span>
+                        <i class="fa-brands fa-facebook mx-2 text-white fs-5"></i>
+                        <i class="fa-brands fa-instagram text-white fs-5"></i>
+                    </div>
+                    <% if(user){ %>
+                        <div class="col-6 text-end user-option">
+                            <img src="<%= user.ava %>" alt="" width="30px" height="30px">
+                            <ul class="text-white ms-2 nav-profile">
+                                <li class="js-option-profile" onmouseover="hoverAva(this)">
+                                    <%= user.username %>
+                                        <ul class="subnav text-black js-subnav">
+                                            <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
+                                            <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
+                                            <li><a href="/logout">Đăng xuất</a></li>
+                                        </ul>
+                                </li>
+            
                             </ul>
-                        </li>
-
-                    </ul>
+                        </div>
+                        <% } else{ %>
+                            <ul class="col-6 text-end">
+                                <li id="register-item" class="text-white me-3">Đăng kí</li>
+                                <li id="login-item" class="text-white">Đăng nhập</li>
+                            </ul>
+                            <% } %>
                 </div>
-            </div>
-            <div class="row">
-                <div class="logo col-2 text-center">
-                    <a class="d-none d-lg-block" href="/">HQDShop</a>
-                    <a class="d-lg-none" href="/">HQD</a>
+                <div class="row">
+                    <div class="logo col-2 text-center">
+                        <a class="d-none d-lg-block" href="/">HQDShop</a>
+                        <a class="d-lg-none" href="/">HQD</a>
+                    </div>
+                    <div class="col-9 input-search position-relative text-center">
+                        <input type="text" placeholder="Nhập tìm kiếm theo tên" name="name">
+                        <button class="position-absolute text-center">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <div class="col-1 cart-icon">
+                        <a href="/list-order">
+                            <span>542</span>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+            
+                    </div>
                 </div>
-                <div class="col-9 input-search position-relative text-center">
-                    <input type="text" placeholder="Nhập tìm kiếm">
-                    <i class="fa-solid fa-magnifying-glass position-absolute"></i>
-                </div>
-                <div class="col-1 cart-icon">
-                    <a href="/list-order">
-                        <span>542</span>
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </a>
-
-                </div>
-            </div>
-        </header>
+            </header>
+        </form>
+        
         <div class="content">
             <div class="uniqe">
                 <div>
@@ -309,6 +318,11 @@
                                 <input id="password" rule="password" type="password" class="auth-form__input"
                                     placeholder="Mật khẩu của bạn" />
                             </div>
+                            <% if(flashMessages.loginMessage){ %>
+                                <p class="text-danger">
+                                    <%= flashMessages.loginMessage %>
+                                </p>
+                                <% } %>
                         </div>
 
                         <div class="auth-form__aside">
@@ -351,8 +365,22 @@
     </div>
 </body>
 <script>
+    var message = "<%= flashMessages.loginMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
+    }
+    function hoverAva() {
+        let modalProfile = document.querySelector('.js-option-profile');
+        let subnav = document.querySelector('.js-subnav');
+        const openProfileOptions = () => {
+            subnav.classList.add('open');
+        }
+        const closeProfileOptions = () => {
+            subnav.classList.remove('open');
+        }
+
+        modalProfile.addEventListener('mouseover', openProfileOptions);
+        modalProfile.addEventListener('mouseout', closeProfileOptions);
     }
     function handleForms() {
         let regItem = document.getElementById('register-item'); // get element of register item
@@ -367,10 +395,9 @@
         let regToLogBtn = document.querySelector('#register-form .auth-form__switch-btn'); // get element of login button from register form
         let logToRegBtn = document.querySelector('#login-form .auth-form__switch-btn'); // get element of register button from login form
 
-        let modalProfile = document.querySelector('.js-option-profile');
-        let subnav = document.querySelector('.js-subnav');
         const openForm = (check) => {
 
+            console.log('user: ');
             modalLayer.classList.add('open');
             if (check === 1) {
                 regForm.style.display = 'block';
@@ -381,30 +408,34 @@
                 logForm.style.display = 'block';
             }
 
+
         }
         const closeForm = () => {
+
             modalLayer.classList.remove('open');
             regForm.style.display = 'none';
             logForm.style.display = 'none';
 
         }
-        const openProfileOptions = () => {
-            console.log("hover");
-            subnav.classList.add('open');
+        if (message) {
+            openForm(2);
         }
-        const closeProfileOptions = () => {
-            subnav.classList.remove('open');
-        }
-        // regItem.addEventListener('click', () => openForm(1));
-        // logItem.addEventListener('click', () => openForm(2));
-        // modalLayer.addEventListener('click', closeForm);
-        // modalBody.addEventListener('click', function (event) {
-        //     //ngừng nổi bọt
-        //     event.stopPropagation()
-        // })
-        modalProfile.addEventListener('mouseover', openProfileOptions);
-        modalProfile.addEventListener('mouseout', closeProfileOptions);
 
+        regItem.addEventListener('click', () => openForm(1));
+        logItem.addEventListener('click', () => openForm(2));
+        modalLayer.addEventListener('click', closeForm);
+        modalBody.addEventListener('click', function (event) {
+
+            event.stopPropagation()
+        })
+
+
+    }
+    function disableEmptyInputs(form) {
+        var controls = form.elements;
+        for (var i = 0, iLen = controls.length; i < iLen; i++) {
+            if (controls[i].value == '') controls[i].disabled = true;
+        }
     }
 
     handleForms();

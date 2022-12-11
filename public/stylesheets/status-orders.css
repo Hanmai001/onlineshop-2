@@ -30,7 +30,9 @@ html {
     background: linear-gradient(-180deg, #f53d2d, #f63);
     transition: transform .2s cubic-bezier(.4, 0, .2, 1);
 }
-
+.list-order-status .user-option>img {
+    border-radius: 50%;
+}
 .list-order-status ul {
     list-style-type: none;
     padding-left: 0 !important;
@@ -139,7 +141,13 @@ html {
 .list-order-status .input-search input:focus {
     outline: none;
 }
-
+.list-order-status .input-search button {
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    right: 11.5%;
+    top: 3px;
+}
 .list-order-status .input-search i {
     right: 12.5%;
     top: 6px;
@@ -158,7 +166,9 @@ html {
     padding-left: 3.6rem;
     font-weight: 350;
 }
-
+.list-order-status .content .current-tag {
+    color: #f63 !important;
+}
 .list-order-status .content .current-tag {
     color: #f63 !important;
 }

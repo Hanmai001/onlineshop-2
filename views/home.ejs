@@ -17,6 +17,7 @@
 <body>
     <!-- Block Element Modifier -->
     <div class="home">
+        
         <form action="" onsubmit="disableEmptyInputs(this)" method="get">
             <header class="header row">
                 <div class="row pt-2">
@@ -25,23 +26,28 @@
                         <i class="fa-brands fa-facebook mx-2 text-white fs-5"></i>
                         <i class="fa-brands fa-instagram text-white fs-5"></i>
                     </div>
-                    <ul class="col-6 text-end">
+
+                    <% if(user){ %>
+                        <div class="col-6 text-end user-option">
+                            <img src="<%= user.ava %>" alt="" width="30px" height="30px">
+                            <ul class="text-white ms-2 nav-profile">
+                                <li class="js-option-profile" onmouseover="hoverAva(this)"><%= user.username %>
+                                    <ul class="subnav text-black js-subnav">
+                                        <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
+                                        <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
+                                        <li><a href="/logout">Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <% } else{ %>
+                            <ul class="col-6 text-end">
                                 <li id="register-item" class="text-white me-3">Đăng kí</li>
                                 <li id="login-item" class="text-white">Đăng nhập</li>
                             </ul>
-                    <!-- <div class="col-6 text-end">
-                        <img src="/images/user.png" alt="" width="30px" height="30px">
-                        <ul class="text-white ms-2 nav-profile">
-                            <li class="js-option-profile">Harikohan
-                                <ul class="subnav text-black js-subnav">
-                                    <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
-                                    <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
-                                    <li><a href="#">Đăng xuất</a></li>
-                                </ul>
-                            </li>
+                            <% } %>
 
-                        </ul>
-                    </div> -->
                 </div>
                 <div class="row">
                     <div class="logo col-2 text-center">
@@ -222,7 +228,8 @@
 
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="username" rule="username" type="text" class="auth-form__input" placeholder="Username của bạn" name="username" />
+                                <input id="username" rule="username" type="text" class="auth-form__input"
+                                    placeholder="Username của bạn" name="username" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="email" rule="email" type="text" class="auth-form__input"
@@ -234,8 +241,8 @@
                             </div>
                             <div class="auth-form__group">
                                 <input id="password_confirmation" rule="password_confirmation" type="password"
-                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn" name="confirm-password" /><span
-                                    class="auth-form__message"></span>
+                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn"
+                                    name="confirm-password" /><span class="auth-form__message"></span>
                             </div>
                         </div>
 
@@ -275,7 +282,7 @@
                     </div>
                 </form>
                 <!-- Login Form -->
-                <form id="login-form" class="auth-form" method="post">
+                <form action="/login" id="login-form" class="auth-form" method="post">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng nhập</div>
@@ -283,13 +290,16 @@
 
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="email" rule="email" type="text" class="auth-form__input"
-                                    placeholder="Email của bạn" />
+                                <input id="username" rule="username" type="text" class="auth-form__input"
+                                    placeholder="Username" name="username" required />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
+                                    placeholder="Mật khẩu của bạn" name="password" required />
                             </div>
+                            <% if(flashMessages.loginMessage){ %>
+                                <p class="text-danger"><%= flashMessages.loginMessage %></p>
+                                <% } %>
                         </div>
 
                         <div class="auth-form__aside">
@@ -332,8 +342,22 @@
     </div>
 </body>
 <script>
+    var message = "<%= flashMessages.loginMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
+    }
+    function hoverAva() {
+        let modalProfile = document.querySelector('.js-option-profile');
+        let subnav = document.querySelector('.js-subnav');
+        const openProfileOptions = () => {
+            subnav.classList.add('open');
+        }
+        const closeProfileOptions = () => {
+            subnav.classList.remove('open');
+        }
+
+        modalProfile.addEventListener('mouseover', openProfileOptions);
+        modalProfile.addEventListener('mouseout', closeProfileOptions);
     }
     function handleForms() {
         let regItem = document.getElementById('register-item'); // get element of register item
@@ -347,12 +371,10 @@
 
         let regToLogBtn = document.querySelector('#register-form .auth-form__switch-btn'); // get element of login button from register form
         let logToRegBtn = document.querySelector('#login-form .auth-form__switch-btn'); // get element of register button from login form
-
-        let modalProfile = document.querySelector('.js-option-profile');
-        let subnav = document.querySelector('.js-subnav');
-        //console.log(itemPic);
+        
         const openForm = (check) => {
 
+            console.log('user: ');
             modalLayer.classList.add('open');
             if (check === 1) {
                 regForm.style.display = 'block';
@@ -362,6 +384,7 @@
                 regForm.style.display = 'none';
                 logForm.style.display = 'block';
             }
+            
 
         }
         const closeForm = () => {
@@ -371,21 +394,19 @@
             logForm.style.display = 'none';
 
         }
-        const openProfileOptions = () => {
-            subnav.classList.add('open');
+        if (message) {
+            openForm(2);
         }
-        const closeProfileOptions = () => {
-            subnav.classList.remove('open');
-        }
+       
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         modalLayer.addEventListener('click', closeForm);
         modalBody.addEventListener('click', function (event) {
-            //ngừng nổi bọt
+           
             event.stopPropagation()
         })
-        //modalProfile.addEventListener('mouseover', openProfileOptions);
-        //modalProfile.addEventListener('mouseout', closeProfileOptions);
+
+
     }
     function disableEmptyInputs(form) {
         var controls = form.elements;
