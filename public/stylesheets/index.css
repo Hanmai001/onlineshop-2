@@ -148,7 +148,35 @@ body {
     padding: 10px 0;
     color: rgb(124, 138, 154);
 }
+.avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
 
+.avatar label {
+    border: 1px solid #d5d5d5;
+    width: 120px;
+    padding: 10px 0;
+    color: rgb(124, 138, 154);
+}
+
+.avatar label:hover {
+    cursor: pointer;
+}
+.sex-profile input {
+    width: 20px;
+}
+
+.sex-profile label {
+    width: 50px;
+    color: #000;
+}
+
+.sex-profile label:first-child {
+    width: 120px;
+    color: rgb(124, 138, 154);
+}
 
 /* Làm trôi ảnh MODAL CONTAINER*/
 /* Tạo ra chuyển động liên tiếp của ảnh tĩnh */
