@@ -89,7 +89,7 @@
                         <form action="" class="row">
                             <div class="col-3 avatar text-center">
                                 <img class="mt-4"
-                                    src="<%= user.ava %>"
+                                    src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>"
                                     alt="">
                                 <input type="file" name="profile_pic" id="profile-file" hidden>
                                 <div class="mt-3">

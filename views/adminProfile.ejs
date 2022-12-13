@@ -113,7 +113,7 @@
           <div class="row">
             <div class="col-md-3 border-right">
               <div class="d-flex flex-column align-items-center text-center p-3 py-5 avatar">
-                <img class="rounded-circle mt-5" width="150px" src="<%= user.ava %>">
+                <img class="rounded-circle mt-5" width="150px" src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>">
                 <input type="file" name="profile_pic" id="profile-file" hidden>
                 <div class="mt-3">
                   <label for="profile-file">Chọn Ảnh</label>

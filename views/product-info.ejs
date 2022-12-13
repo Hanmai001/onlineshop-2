@@ -26,7 +26,8 @@
                     </div>
                     <% if(user){ %>
                         <div class="col-6 text-end user-option">
-                            <img src="<%= user.ava %>" alt="" width="30px" height="30px">
+                            <img src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="" width="30px"
+                                height="30px">
                             <ul class="text-white ms-2 nav-profile">
                                 <li class="js-option-profile" onmouseover="hoverAva(this)">
                                     <%= user.username %>
@@ -58,8 +59,10 @@
                         </button>
                     </div>
                     <div class="col-1 cart-icon">
-                        <a href="/list-order">
-                            <span>542</span>
+                        <a onclick="clickCart()">
+                            <span>
+                                <%= user ? 542 : 0 %>
+                            </span>
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
 
@@ -250,7 +253,8 @@
         <div class="modal">
 
             <div class="modal__body">
-                <form id="register-form" class="auth-form">
+                <!-- Register Form -->
+                <form action="/register" id="register-form" class="auth-form" method="post">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng ký</div>
@@ -258,18 +262,27 @@
 
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="email" rule="email" type="text" class="auth-form__input"
-                                    placeholder="Email của bạn" />
+                                <input id="username" rule="username" type="text" class="auth-form__input"
+                                    placeholder="Username của bạn" name="username" />
+                            </div>
+                            <div class="auth-form__group">
+                                <input id="email" rule="email" type="email" class="auth-form__input"
+                                    placeholder="Email của bạn" name="email" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
+                                    placeholder="Mật khẩu của bạn" name="password" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password_confirmation" rule="password_confirmation" type="password"
-                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn" /><span
-                                    class="auth-form__message"></span>
+                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn"
+                                    name="confirmPassword" /><span class="auth-form__message"></span>
                             </div>
+                            <% if(flashMessages.registerMessage){ %>
+                                <p class="text-danger" id="message">
+                                    <%= flashMessages.registerMessage %>
+                                </p>
+                                <% } %>
                         </div>
 
                         <div class="auth-form__aside">
@@ -307,7 +320,9 @@
                         </a>
                     </div>
                 </form>
-                <form id="login-form" class="auth-form">
+                <!-- Login Form -->
+
+                <form action="/login" id="login-form" class="auth-form" method="post">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng nhập</div>
@@ -315,15 +330,15 @@
 
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="email" rule="email" type="text" class="auth-form__input"
-                                    placeholder="Email của bạn" />
+                                <input id="username" rule="username" type="text" class="auth-form__input"
+                                    placeholder="Username" name="username" required />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
+                                    placeholder="Mật khẩu của bạn" name="password" required />
                             </div>
                             <% if(flashMessages.loginMessage){ %>
-                                <p class="text-danger">
+                                <p class="text-danger" id="message">
                                     <%= flashMessages.loginMessage %>
                                 </p>
                                 <% } %>
@@ -369,9 +384,17 @@
     </div>
 </body>
 <script>
-    var message = "<%= flashMessages.loginMessage %>";
+    var message1 = "<%= flashMessages.loginMessage %>";
+    var message2 = "<%= flashMessages.registerMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
+    }
+    function clickCart() {
+        if ("<%= user %>")
+            window.location.href = "/list-order";
+        else {
+            window.location.href = "/";
+        }
     }
     function hoverAva() {
         let modalProfile = document.querySelector('.js-option-profile');
@@ -416,15 +439,21 @@
         }
         const closeForm = () => {
 
+            const message = document.getElementById('message');
+            if (message)
+                message.remove();
             modalLayer.classList.remove('open');
             regForm.style.display = 'none';
             logForm.style.display = 'none';
 
         }
-        if (message) {
+
+        if (message1) {
             openForm(2);
         }
-
+        if (message2) {
+            openForm(1);
+        }
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         modalLayer.addEventListener('click', closeForm);
