@@ -61,9 +61,11 @@ html {
     padding-left: 0 !important;
     display: inline-block;
 }
-.home .user-option > img {
+
+.home .user-option>img {
     border-radius: 50%;
 }
+
 .home .nav-profile>li {
     position: relative;
 }
@@ -153,9 +155,10 @@ html {
     margin-top: 7rem;
 }
 
-.home .filter-item > div {
+.home .filter-item>div {
     margin-left: 0rem;
 }
+
 .home .filter-item label,
 input {
     align-self: start;
@@ -194,12 +197,15 @@ input {
     margin-left: 10px;
     text-align: center;
 }
+
 .home .content .sort-list input:focus {
     outline: none;
 }
+
 .home .content .sort-list input:hover {
     cursor: pointer;
 }
+
 .home .content .sort-list input::placeholder {
     color: #000;
 }
