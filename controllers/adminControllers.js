@@ -1,4 +1,5 @@
 const adminService = require('../model/adminService')
+const authService = require('../model/authService')
 
 let getHomePage = (req, res) => {
     return res.render('index.ejs')
@@ -20,6 +21,9 @@ let getProductManage = (req, res) => {
 }
 let getTypeManage = (req, res) => {
     return res.render('TypeManage.ejs')
+}
+let getChangePassword = (req, res) => {
+    return res.render('change-password-admin.ejs')
 }
 let updateInformation = async (req, res) => {
     const {
@@ -59,6 +63,39 @@ let updateInformation = async (req, res) => {
     return res.redirect(`/adminProfile/${idUser}`);
 
 }
+let updatePassword = async (req, res) => {
+    const {
+        curPass,
+        newPass,
+        confPass
+    } = req.body;
+    const idUser = req.params.id;
+    if (!curPass || !newPass || !confPass) {
+        req.flash('updatePassMsg', 'Vui lòng nhập đủ thông tin.');
+        return res.redirect(`/changePassword/${idUser}`);
+    }
+    if (curPass.length < 6 || newPass.length < 6 || confPass.length < 6) {
+        req.flash('updatePassMsg', 'Mật khẩu phải ít nhất 6 ký tự.');
+        return res.redirect(`/changePassword/${idUser}`);
+    }
+    if (newPass !== confPass) {
+        req.flash('updatePassMsg', 'Xác nhận mật khẩu không trùng.');
+        return res.redirect(`/changePassword/${idUser}`);
+    }
+    console.log(res.locals.user.username);
+    if (!await authService.checkUserCredential(res.locals.user.username, curPass)) {
+        //console.log("sai mk");
+        req.flash('updatePassMsg', 'Nhập sai mật khẩu hiện tại.');
+        return res.redirect(`/changePassword/${idUser}`);
+    }
+    const result = await adminService.updatePassword(req.body, idUser);
+    if (result) {
+        req.flash('updatePassMsg', 'Đổi mật khẩu thành công.');
+        return res.redirect(`/changePassword/${idUser}`);
+    }
+    req.flash('updatePassMsg', 'Đổi mật khẩu thất bại.');
+    return res.redirect(`/changePassword/${idUser}`);
+}
 module.exports = {
     getHomePage,
     getAdminProfile,
@@ -67,5 +104,7 @@ module.exports = {
     getOriginManage,
     getProductManage,
     getTypeManage,
-    updateInformation
+    updateInformation,
+    getChangePassword,
+    updatePassword
 }

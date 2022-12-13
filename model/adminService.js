@@ -1,4 +1,5 @@
 const db = require('../config/connectDB');
+const bcrypt = require('bcryptjs');
 
 let updateProfile = async (data, idUser) => {
     const {
@@ -55,7 +56,26 @@ let updateProfile = async (data, idUser) => {
 
     return result[0] && result.length > 0;
 }
+let updatePassword = async (data, idUser) => {
+    const {
+        curPass,
+        newPass,
+        confPass
+    } = data;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newPass, salt);
+    let result;
+    try {
+        result = await db.query("UPDATE user SET PASSWORD = ? WHERE IDUSER = ?", [hash, parseInt(idUser)]);
+    } catch (err) {
+        return null;
+    }
+
+    return result[0] && result.length > 0;
+
+}
 
 module.exports = {
-    updateProfile
+    updateProfile,
+    updatePassword
 }
