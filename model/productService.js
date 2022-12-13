@@ -162,7 +162,7 @@ let getRelatedProducts = async (id) => {
     return result[0];
 }
 let getReview = async (id) => {
-    const result = await db.query('SELECT rv.CONTENT, us.FULLNAME, us.AVATAR FROM  product pd, review rv JOIN user us ON us.IDUSER = rv.IDUSER WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
+    const result = await db.query('SELECT rv.CONTENT, us.FULLNAME, us.AVATAR FROM review rv JOIN user us ON us.IDUSER = rv.IDUSER WHERE rv.IDPRODUCT = ?', [parseInt(id)]);
     //console.log(result[0])
     return result[0];
 }

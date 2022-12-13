@@ -268,8 +268,8 @@
                         </div>
 
                         <div class="auth-form__controls">
-                            <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
-                            <button class="btn btn--primary">ĐĂNG KÝ</button>
+                            <input type="text" readonly class="btn auth-form__controls-back me-2" id="js-form-btn-back">TRỞ LẠI</input>
+                            <input type="text" readonly class="btn btn--primary">ĐĂNG KÝ</input>
                         </div>
                     </div>
 
@@ -323,7 +323,7 @@
                         </div>
 
                         <div class="auth-form__controls">
-                            <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
+                            <button class="btn auth-form__controls-back me-2" id="js-form-btn-back">TRỞ LẠI</button>
                             <button class="btn btn--primary">ĐĂNG NHẬP</button>
                         </div>
 
@@ -414,6 +414,7 @@
         let regItem = document.getElementById('register-item'); // get element of register item
         let logItem = document.getElementById('login-item'); // get element of register item
         let forgetItem = document.getElementById('forget-item');
+        let btnBack = document.getElementById('js-form-btn-back');
 
         let modalLayer = document.querySelector('.modal'); // get element of modal layer
         let modalBody = document.querySelector('.modal__body');
@@ -466,9 +467,11 @@
         if (message2) {
             openForm(1);
         }
+        
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         forgetItem.addEventListener('click', () => openForm(3));
+        btnBack.addEventListener('click', () => closeForm);
         modalLayer.addEventListener('click', closeForm);
         modalBody.addEventListener('click', function (event) {
             event.stopPropagation()

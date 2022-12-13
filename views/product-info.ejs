@@ -213,7 +213,8 @@
                             <% for(var i=0; i<review.length; i++) {%>
                                 <div class="review row py-4 border-bottom">
                                     <div class="col-2 text-center">
-                                        <img src="<%= review[i].AVATAR%>" alt="">
+                                        <img src="<%= review[i].AVATAR ? review[i].AVATAR : '/images/profile-icon.png'%>"
+                                            alt="">
                                     </div>
                                     <div class="col-10">
                                         <p class="name pe-4">
