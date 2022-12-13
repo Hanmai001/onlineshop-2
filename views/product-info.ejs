@@ -26,8 +26,7 @@
                     </div>
                     <% if(user){ %>
                         <div class="col-6 text-end user-option">
-                            <img src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="" width="30px"
-                                height="30px">
+                            <img src="<%= user.ava %>" alt="" width="30px" height="30px">
                             <ul class="text-white ms-2 nav-profile">
                                 <li class="js-option-profile" onmouseover="hoverAva(this)">
                                     <%= user.username %>
@@ -59,8 +58,8 @@
                         </button>
                     </div>
                     <div class="col-1 cart-icon">
-                        <a onclick="clickCart()">
-                            <span><%= user ? 542 : 0 %></span>
+                        <a href="/list-order">
+                            <span>542</span>
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
 
@@ -77,7 +76,7 @@
                             <img src="<%= product[0].LINK%>" alt="">
                             <div class="extra-pics mt-2">
                                 <i class="fa-solid fa-angle-left"></i>
-                                <% for(var i=0; i<product.length; i++) {%>
+                                <% for(var i=0; i< product.length; i++) {%>
                                     <img src="<%= product[i].LINK%>" alt="">
                                     <% } %>
                                         <i class="fa-solid fa-angle-right"></i>
@@ -208,14 +207,18 @@
                             </form>
                         </div>
                         <div class="list-review">
-                            <% for(var i=0; i<5; i++) {%>
+                            <% for(var i=0; i<review.length; i++) {%>
                                 <div class="review row py-4 border-bottom">
                                     <div class="col-2 text-center">
-                                        <img src="https://www.studytienganh.vn/upload/2022/05/112273.jpg" alt="">
+                                        <img src="<%= review[i].AVATAR%>" alt="">
                                     </div>
                                     <div class="col-10">
-                                        <p class="name pe-4">Ho Thi Ngok Nghek</p>
-                                        <p class="pe-4">Giao hàng nhanh, giống hình, chưa test test xog rì viu típ.</p>
+                                        <p class="name pe-4">
+                                            <%= review[i].FULLNAME%>
+                                        </p>
+                                        <p class="pe-4">
+                                            <%= review[i].CONTENT%>
+                                        </p>
                                     </div>
                                 </div>
                                 <% } %>
@@ -245,60 +248,50 @@
         </div>
         <!--Modal layout-->
         <div class="modal">
-        
+
             <div class="modal__body">
-                <!-- Register Form -->
-                <form action="/register" id="register-form" class="auth-form" method="post">
+                <form id="register-form" class="auth-form">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng ký</div>
                         </div>
-        
+
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="username" rule="username" type="text" class="auth-form__input"
-                                    placeholder="Username của bạn" name="username" />
-                            </div>
-                            <div class="auth-form__group">
-                                <input id="email" rule="email" type="email" class="auth-form__input" placeholder="Email của bạn"
-                                    name="email" />
+                                <input id="email" rule="email" type="text" class="auth-form__input"
+                                    placeholder="Email của bạn" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" name="password" />
+                                    placeholder="Mật khẩu của bạn" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password_confirmation" rule="password_confirmation" type="password"
-                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn"
-                                    name="confirmPassword" /><span class="auth-form__message"></span>
+                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn" /><span
+                                    class="auth-form__message"></span>
                             </div>
-                            <% if(flashMessages.registerMessage){ %>
-                                <p class="text-danger" id="message">
-                                    <%= flashMessages.registerMessage %>
-                                </p>
-                                <% } %>
                         </div>
-        
+
                         <div class="auth-form__aside">
                             <p class="auth-form__policy-text">
                                 Bằng việc đăng ký, bạn đã đồng ý với Minecraft Shop
                                 <a href="" class="auth-form__text-link">Điều khoản dịch vụ</a> &
                                 <a href="" class="auth-form__text-link">Chính sách bảo mật</a>
                             </p>
-        
+
                             <div class="auth-form__switch-wrapper">
                                 <span class="auth-form__switch-text">Bạn đã có tài khoản?</span>
                                 <span class="auth-form__switch-btn">Đăng nhập</span>
                             </div>
                         </div>
-        
+
                         <div class="auth-form__controls">
                             <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
                             <button class="btn btn--primary">ĐĂNG KÝ</button>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="auth-form__socials">
                         <a href="" class="auth-form__socials--facebook btn btn--size-s btn--with-icon">
                             <i class="auth-form__socials-icon fab fa-facebook-square"></i>
@@ -314,30 +307,28 @@
                         </a>
                     </div>
                 </form>
-                <!-- Login Form -->
-        
-                <form action="/login" id="login-form" class="auth-form" method="post">
+                <form id="login-form" class="auth-form">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng nhập</div>
                         </div>
-        
+
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="username" rule="username" type="text" class="auth-form__input" placeholder="Username"
-                                    name="username" required />
+                                <input id="email" rule="email" type="text" class="auth-form__input"
+                                    placeholder="Email của bạn" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" name="password" required />
+                                    placeholder="Mật khẩu của bạn" />
                             </div>
                             <% if(flashMessages.loginMessage){ %>
-                                <p class="text-danger" id="message">
+                                <p class="text-danger">
                                     <%= flashMessages.loginMessage %>
                                 </p>
                                 <% } %>
                         </div>
-        
+
                         <div class="auth-form__aside">
                             <div class="auth-form__help">
                                 <a href="" class="auth-form__help-link auth-form__help-forgot">Quên mật khẩu</a>
@@ -345,19 +336,19 @@
                                 <a href="" class="auth-form__help-link">Cần trợ giúp?</a>
                             </div>
                         </div>
-        
+
                         <div class="auth-form__controls">
                             <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
                             <button class="btn btn--primary">ĐĂNG NHẬP</button>
                         </div>
-        
+
                         <div class="auth-form__switch-wrapper">
                             <span class="auth-form__switch-text">Bạn chưa có tài khoản?</span>
                             <span class="auth-form__switch-btn">Đăng ký</span>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="auth-form__socials">
                         <a href="" class="auth-form__socials--facebook btn btn--size-s btn--with-icon">
                             <i class="auth-form__socials-icon fab fa-facebook-square"></i>
@@ -378,17 +369,9 @@
     </div>
 </body>
 <script>
-    var message1 = "<%= flashMessages.loginMessage %>";
-    var message2 = "<%= flashMessages.registerMessage %>";
+    var message = "<%= flashMessages.loginMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
-    }
-    function clickCart() {
-        if ("<%= user %>")
-            window.location.href = "/list-order";
-        else {
-            location.reload();
-        }
     }
     function hoverAva() {
         let modalProfile = document.querySelector('.js-option-profile');
@@ -433,20 +416,15 @@
         }
         const closeForm = () => {
 
-            const message = document.getElementById('message');
-            if (message)
-                message.remove();
             modalLayer.classList.remove('open');
             regForm.style.display = 'none';
             logForm.style.display = 'none';
 
         }
-        if (message1) {
+        if (message) {
             openForm(2);
         }
-        if (message2) {
-            openForm(1);
-        }
+
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         modalLayer.addEventListener('click', closeForm);

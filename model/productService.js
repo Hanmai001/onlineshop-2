@@ -157,12 +157,15 @@ let getDetailProduct = async (id) => {
 
 }
 let getRelatedProducts = async (id) => {
-    const result = await db.query('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
+    const result = await db.query('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt ON pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
     //console.log(result[0]);
     return result[0];
-
 }
-
+let getReview = async (id) => {
+    const result = await db.query('SELECT rv.CONTENT, us.FULLNAME, us.AVATAR FROM  product pd, review rv JOIN user us ON us.IDUSER = rv.IDUSER WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
+    //console.log(result[0])
+    return result[0];
+}
 module.exports = {
     getAllProduct,
     getAllBrand,
@@ -171,5 +174,6 @@ module.exports = {
     getAllPhoto,
     getFilterProduct,
     getDetailProduct,
-    getRelatedProducts
+    getRelatedProducts,
+    getReview
 }

@@ -46,8 +46,9 @@ let getDetailProductPage = async (req, res) => {
 
     const product = await datas.getDetailProduct(id);
     const relateProducts = await datas.getRelatedProducts(id);
+    const review = await datas.getReview(id);
 
-    return res.render('product-info.ejs', { product: product, relateProducts: relateProducts });
+    return res.render('product-info.ejs', { product: product, relateProducts: relateProducts, review: review });
 }
 let getListOrderPage = async (req, res) => {
     return res.render('list-order.ejs');
