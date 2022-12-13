@@ -1,8 +1,10 @@
-const datas = require('../model/productService');
+const e = require('connect-flash');
+const productService = require('../model/productService');
+const userService = require('../model/userService');
 
 let getHomepage = async (req, res) => {
     let products;
-    const allProducts = await datas.getAllProduct();
+    const allProducts = await productService.getAllProduct();
     const {
         name: nameFilter,
         type: typeFilter,
@@ -16,12 +18,12 @@ let getHomepage = async (req, res) => {
         sort: sortFilter
     } = req.query;
     if (nameFilter || typeFilter || manufacturerFilter || brandFilter || priceFrom || priceTo || numBuy || sortPrice || timeCreate || sortFilter)
-        products = await datas.getFilterProduct(req.query);
+        products = await productService.getFilterProduct(req.query);
     else
         products = allProducts;
-    const brands = await datas.getAllBrand();
-    const manufacturers = await datas.getAllManufacturer();
-    const types = await datas.getAllType();
+    const brands = await productService.getAllBrand();
+    const manufacturers = await productService.getAllManufacturer();
+    const types = await productService.getAllType();
     let random_names = [];
     let length = allProducts.length;
     for (let i = 0; i < 6; i++) {
@@ -44,9 +46,9 @@ let getHomepage = async (req, res) => {
 let getDetailProductPage = async (req, res) => {
     let id = req.params.id;
 
-    const product = await datas.getDetailProduct(id);
-    const relateProducts = await datas.getRelatedProducts(id);
-    const review = await datas.getReview(id);
+    const product = await productService.getDetailProduct(id);
+    const relateProducts = await productService.getRelatedProducts(id);
+    const review = await productService.getReview(id);
 
     return res.render('product-info.ejs', { product: product, relateProducts: relateProducts, review: review });
 }
@@ -54,7 +56,46 @@ let getListOrderPage = async (req, res) => {
     return res.render('list-order.ejs');
 }
 let getProfilePage = async (req, res) => {
+
     return res.render('my-profile.ejs');
+}
+let updateInformation = async (req, res) => {
+    const {
+        updateAva: ava,
+        updateFullname: fullname,
+        updateEmail: email,
+        updatePhone: phone,
+        updateSex: sex
+    } = req.body;
+    //console.log(req.body)
+    const idUser = req.params.id;
+    if (phone.length > 11) {
+        req.flash('updateProfileMsg', 'SĐT phải nhỏ hơn 12 kí tự.');
+        return res.redirect(`/my-profile/${idUser}`);
+    }
+
+    const result = await userService.updateProfile(req.body, idUser);
+    //console.log(res.locals.user);
+    if (result) {
+        if (ava)
+            res.locals.user.ava = ava;
+        if (fullname)
+            res.locals.user.fullname = fullname;
+        if (email)
+            res.locals.user.email = email;
+        if (phone)
+            res.locals.user.phone = phone;
+        if (sex && sex === "female")
+            res.locals.user.sex = 'Nữ';
+        else if (sex && sex === "male")
+            res.locals.user.sex = 'Nam';
+        else if (sex && sex === "sexOther")
+            res.locals.user.sex = 'Khác';
+        return res.redirect(`/my-profile/${idUser}`);
+    }
+    req.flash('updateProfileMsg', 'Kiểm tra lại thông tin cập nhật.');
+    return res.redirect(`/my-profile/${idUser}`);
+
 }
 let getUpdatePasswordPage = async (req, res) => {
     return res.render('change-password.ejs');
@@ -73,4 +114,5 @@ module.exports = {
     getUpdatePasswordPage,
     getListOrderStatusPage,
     getPaymentPage,
+    updateInformation
 }

@@ -34,7 +34,7 @@
                                 <li class="js-option-profile" onmouseover="hoverAva(this)">
                                     <%= user.username %>
                                         <ul class="subnav text-black js-subnav">
-                                            <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
+                                            <li><a href="/my-profile/<%=user.id %>">Tài khoản của tôi</a></li>
                                             <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
                                             <li><a href="/logout">Đăng xuất</a></li>
                                         </ul>
@@ -268,8 +268,9 @@
                         </div>
 
                         <div class="auth-form__controls">
-                            <input type="text" readonly class="btn auth-form__controls-back me-2" id="js-form-btn-back">TRỞ LẠI</input>
-                            <input type="text" readonly class="btn btn--primary">ĐĂNG KÝ</input>
+                            <input type="text" readonly class="btn auth-form__controls-back me-2"
+                                id="js-form-btn-back" placeholder="TRỞ LẠI"/>
+                            <button readonly class="btn btn--primary">ĐĂNG KÝ</button>
                         </div>
                     </div>
 
@@ -460,14 +461,14 @@
             forgetForm.style.display = 'none';
 
         }
-        
+
         if (message1) {
             openForm(2);
         }
         if (message2) {
             openForm(1);
         }
-        
+
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         forgetItem.addEventListener('click', () => openForm(3));
