@@ -1,6 +1,7 @@
 const e = require('connect-flash');
 const productService = require('../model/productService');
 const userService = require('../model/userService');
+const authService = require('../model/authService');
 
 let getHomepage = async (req, res) => {
     let products;
@@ -98,11 +99,46 @@ let updateInformation = async (req, res) => {
 
 }
 let getUpdatePasswordPage = async (req, res) => {
-    return res.render('change-password.ejs');
+    return res.render('change-password.ejs')
+
+}
+let updatePassword = async (req, res) => {
+    const {
+        curPass,
+        newPass,
+        confPass
+    } = req.body;
+    const idUser = req.params.id;
+    if (!curPass || !newPass || !confPass) {
+        req.flash('updatePassMsg', 'Vui lòng nhập đủ thông tin.');
+        return res.redirect(`/change-password/${idUser}`);
+    }
+    if (curPass.length < 6 || newPass.length < 6 || confPass.length < 6) {
+        req.flash('updatePassMsg', 'Mật khẩu phải ít nhất 6 ký tự.');
+        return res.redirect(`/change-password/${idUser}`);
+    }
+    if (newPass !== confPass) {
+        req.flash('updatePassMsg', 'Xác nhận mật khẩu không trùng.');
+        return res.redirect(`/change-password/${idUser}`);
+    }
+    console.log(res.locals.user.username);
+    if (!await authService.checkUserCredential(res.locals.user.username, curPass)) {
+        //console.log("sai mk");
+        req.flash('updatePassMsg', 'Nhập sai mật khẩu hiện tại.');
+        return res.redirect(`/change-password/${idUser}`);
+    }
+    const result = await userService.updatePassword(req.body, idUser);
+    if (result) {
+        req.flash('updatePassMsg', 'Đổi mật khẩu thành công.');
+        return res.redirect(`/change-password/${idUser}`);
+    }
+    req.flash('updatePassMsg', 'Đổi mật khẩu thất bại.');
+    return res.redirect(`/change-password/${idUser}`);
 }
 let getListOrderStatusPage = async (req, res) => {
-    return res.render('status-orders.ejs');
+    return res.render('status-orders.ejs')
 }
+
 let getPaymentPage = async (req, res) => {
     return res.render('payment.ejs');
 }
@@ -114,5 +150,7 @@ module.exports = {
     getUpdatePasswordPage,
     getListOrderStatusPage,
     getPaymentPage,
-    updateInformation
+    updateInformation,
+    updatePassword
+
 }
