@@ -315,7 +315,8 @@
 
                         <div class="auth-form__aside">
                             <div class="auth-form__help">
-                                <a href="" class="auth-form__help-link auth-form__help-forgot">Quên mật khẩu</a>
+                                <a id="forget-item" class="auth-form__help-link auth-form__help-forgot">Quên
+                                    mậtkhẩu</a>
                                 <span class="auth-form__help-separate"></span>
                                 <a href="" class="auth-form__help-link">Cần trợ giúp?</a>
                             </div>
@@ -348,6 +349,36 @@
                         </a>
                     </div>
                 </form>
+
+                <!-- Forget Form -->
+                <form action="/forget" id="forget-form" class="auth-form" method="post">
+                    <div class="auth-form__container">
+                        <div class="auth-form__header">
+                            <div class="auth-form__heading">Quên mật khẩu</div>
+                        </div>
+
+                        <div class="auth-form__groups">
+                            <div class="auth-form__group">
+                                <input id="email" rule="email" type="text" class="auth-form__input"
+                                    placeholder="Email address" name="email" required />
+                            </div>
+                            <% if(flashMessages.emailMessage){ %>
+                                <p class="text-danger" id="message">
+                                    <%= flashMessages.emailMessage %>
+                                </p>
+                                <% } %>
+                        </div>
+
+                        <div class="auth-form__controls">
+                            <button class="btn btn--primary">Send password reset link</button>
+                        </div>
+
+                        <div class="auth-form__switch-wrapper">
+                            <span class="auth-form__switch-text">Bạn chưa có tài khoản?</span>
+                            <span class="auth-form__switch-btn">Đăng ký</span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -355,6 +386,7 @@
 <script>
     var message1 = "<%= flashMessages.loginMessage %>";
     var message2 = "<%= flashMessages.registerMessage %>";
+    var message3 = "<%= flashMessages.emailMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
     }
@@ -381,15 +413,18 @@
     function handleForms() {
         let regItem = document.getElementById('register-item'); // get element of register item
         let logItem = document.getElementById('login-item'); // get element of register item
+        let forgetItem = document.getElementById('forget-item');
 
         let modalLayer = document.querySelector('.modal'); // get element of modal layer
         let modalBody = document.querySelector('.modal__body');
 
         let regForm = document.getElementById('register-form'); // get element of register form
         let logForm = document.getElementById('login-form'); // get element of login form
+        let forgetForm = document.getElementById('forget-form');
 
         let regToLogBtn = document.querySelector('#register-form .auth-form__switch-btn'); // get element of login button from register form
         let logToRegBtn = document.querySelector('#login-form .auth-form__switch-btn'); // get element of register button from login form
+        // let logToForBtn = document.querySelector('#forget-form .auth-form__switch-btn');
 
         const openForm = (check) => {
 
@@ -398,10 +433,17 @@
             if (check === 1) {
                 regForm.style.display = 'block';
                 logForm.style.display = 'none';
+                forgetForm.style.display = 'none';
             }
             else if (check === 2) {
                 regForm.style.display = 'none';
                 logForm.style.display = 'block';
+                forgetForm.style.display = 'none';
+            }
+            else if (check === 3) {
+                regForm.style.display = 'none';
+                logForm.style.display = 'none';
+                forgetForm.style.display = 'block';
             }
 
 
@@ -414,6 +456,7 @@
             modalLayer.classList.remove('open');
             regForm.style.display = 'none';
             logForm.style.display = 'none';
+            forgetForm.style.display = 'none';
 
         }
         
@@ -425,11 +468,12 @@
         }
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
+        forgetItem.addEventListener('click', () => openForm(3));
         modalLayer.addEventListener('click', closeForm);
         modalBody.addEventListener('click', function (event) {
-
             event.stopPropagation()
         })
+
 
 
     }
