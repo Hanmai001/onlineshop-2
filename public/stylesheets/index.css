@@ -148,6 +148,7 @@ body {
     padding: 10px 0;
     color: rgb(124, 138, 154);
 }
+
 .avatar img {
     width: 150px;
     height: 150px;
@@ -164,6 +165,7 @@ body {
 .avatar label:hover {
     cursor: pointer;
 }
+
 .sex-profile input {
     width: 20px;
 }
