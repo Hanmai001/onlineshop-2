@@ -1,4 +1,4 @@
-const Ajv = require('ajv');
+ const Ajv = require('ajv');
 const addFormats = require('ajv-formats');
 const authService = require('../model/authService');
 const registerSchema = require('../schemas/register')

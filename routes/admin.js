@@ -5,13 +5,13 @@ const router = express.Router();
 
 const initAdminRoute = (app) => {
     router.get('/static', authController.isLoggedAdmin, adminControllers.getHomePage);
-    router.get('/adminProfile', authController.isLoggedAdmin, adminControllers.getAdminProfile);
+    router.get('/adminProfile/:id', authController.isLoggedAdmin, adminControllers.getAdminProfile);
     router.get('/OdersManage', authController.isLoggedAdmin, adminControllers.getOdersManage);
     router.get('/UsersManage', authController.isLoggedAdmin, adminControllers.getUsersManage);
     router.get('/OriginManage', authController.isLoggedAdmin, adminControllers.getOriginManage);
     router.get('/ProductManage', authController.isLoggedAdmin, adminControllers.getProductManage);
     router.get('/TypeManage', authController.isLoggedAdmin, adminControllers.getTypeManage);
-
+    router.post('/adminProfile/:id/update-info', adminControllers.updateInformation)
     return app.use('/', router)
 }
 
