@@ -268,8 +268,9 @@
                         </div>
 
                         <div class="auth-form__controls">
-                            <input type="text" readonly class="btn auth-form__controls-back me-2" id="js-form-btn-back">TRỞ LẠI</input>
-                            <input type="text" readonly class="btn btn--primary">ĐĂNG KÝ</input>
+                            <button type="text" readonly class="btn auth-form__controls-back me-2"
+                                id="js-form-btn-back">TRỞ LẠI</button>
+                            <button type="text" readonly class="btn btn--primary">ĐĂNG KÝ</button>
                         </div>
                     </div>
 
@@ -460,14 +461,14 @@
             forgetForm.style.display = 'none';
 
         }
-        
+
         if (message1) {
             openForm(2);
         }
         if (message2) {
             openForm(1);
         }
-        
+
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         forgetItem.addEventListener('click', () => openForm(3));
