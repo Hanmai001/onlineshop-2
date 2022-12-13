@@ -30,8 +30,8 @@
                             <li class="js-option-profile">
                                 <%= user.username %>
                                     <ul class="subnav text-black js-subnav">
-                                        <li><a href="/my-profile/profile">Tài khoản của tôi</a></li>
-                                        <li><a href="/my-profile/list-orders-status">Đơn mua</a></li>
+                                        <li><a href="/my-profile/<%= user.id %>">Tài khoản của tôi</a></li>
+                                        <li><a href="/list-orders-status/<%= user.id %>">Đơn mua</a></li>
                                         <li><a href="/logout">Đăng xuất</a></li>
                                     </ul>
                             </li>
@@ -68,14 +68,14 @@
                     <img class="ms-4" src="https://cf.shopee.vn/file/ba61750a46794d8847c3f463c5e71cc4" alt=""
                         width="30px" height="30px">
                     <span class="">Tài khoản của tôi</span>
-                    <a class="pt-3 current-tag" href="/my-profile/prrofile">Hồ Sơ</a>
-                    <a class="py-3" href="/my-profile/change-password">Đổi mật khẩu</a>
+                    <a class="pt-3 current-tag" href="/my-profile/<%= user.id %>">Hồ Sơ</a>
+                    <a class="py-3" href="/change-password/<%= user.id %>">Đổi mật khẩu</a>
 
                 </div>
                 <div class="ps-4 bill mt-2">
                     <img src="https://cf.shopee.vn/file/f0049e9df4e536bc3e7f140d071e9078" alt="" width="30px"
                         height="30px">
-                    <a href="/my-profile/list-orders-status">Đơn Mua</a>
+                    <a href="/list-orders-status/<%= user.id %>">Đơn Mua</a>
                 </div>
 
             </div>
