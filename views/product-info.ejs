@@ -16,7 +16,7 @@
 <body>
     <!-- Block Element Modifier -->
     <div class="product-info">
-        <form action="/"  method="get">
+        <form action="/" method="get">
             <header class="header row">
                 <div class="row pt-2">
                     <div class="col-6">
@@ -26,7 +26,8 @@
                     </div>
                     <% if(user){ %>
                         <div class="col-6 text-end user-option">
-                            <img src="<%= user.ava %>" alt="" width="30px" height="30px">
+                            <img src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="" width="30px"
+                                height="30px">
                             <ul class="text-white ms-2 nav-profile">
                                 <li class="js-option-profile" onmouseover="hoverAva(this)">
                                     <%= user.username %>
@@ -36,7 +37,7 @@
                                             <li><a href="/logout">Đăng xuất</a></li>
                                         </ul>
                                 </li>
-            
+
                             </ul>
                         </div>
                         <% } else{ %>
@@ -58,16 +59,16 @@
                         </button>
                     </div>
                     <div class="col-1 cart-icon">
-                        <a href="/list-order">
-                            <span>542</span>
+                        <a onclick="clickCart()">
+                            <span><%= user ? 542 : 0 %></span>
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
-            
+
                     </div>
                 </div>
             </header>
         </form>
-        
+
         <div class="content">
             <div class="uniqe">
                 <div>
@@ -244,50 +245,60 @@
         </div>
         <!--Modal layout-->
         <div class="modal">
-
+        
             <div class="modal__body">
-                <form id="register-form" class="auth-form">
+                <!-- Register Form -->
+                <form action="/register" id="register-form" class="auth-form" method="post">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng ký</div>
                         </div>
-
+        
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="email" rule="email" type="text" class="auth-form__input"
-                                    placeholder="Email của bạn" />
+                                <input id="username" rule="username" type="text" class="auth-form__input"
+                                    placeholder="Username của bạn" name="username" />
+                            </div>
+                            <div class="auth-form__group">
+                                <input id="email" rule="email" type="email" class="auth-form__input" placeholder="Email của bạn"
+                                    name="email" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
+                                    placeholder="Mật khẩu của bạn" name="password" />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password_confirmation" rule="password_confirmation" type="password"
-                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn" /><span
-                                    class="auth-form__message"></span>
+                                    class="auth-form__input" placeholder="Nhập lại mật khẩu của bạn"
+                                    name="confirmPassword" /><span class="auth-form__message"></span>
                             </div>
+                            <% if(flashMessages.registerMessage){ %>
+                                <p class="text-danger" id="message">
+                                    <%= flashMessages.registerMessage %>
+                                </p>
+                                <% } %>
                         </div>
-
+        
                         <div class="auth-form__aside">
                             <p class="auth-form__policy-text">
                                 Bằng việc đăng ký, bạn đã đồng ý với Minecraft Shop
                                 <a href="" class="auth-form__text-link">Điều khoản dịch vụ</a> &
                                 <a href="" class="auth-form__text-link">Chính sách bảo mật</a>
                             </p>
-
+        
                             <div class="auth-form__switch-wrapper">
                                 <span class="auth-form__switch-text">Bạn đã có tài khoản?</span>
                                 <span class="auth-form__switch-btn">Đăng nhập</span>
                             </div>
                         </div>
-
+        
                         <div class="auth-form__controls">
                             <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
                             <button class="btn btn--primary">ĐĂNG KÝ</button>
                         </div>
                     </div>
-
-
+        
+        
                     <div class="auth-form__socials">
                         <a href="" class="auth-form__socials--facebook btn btn--size-s btn--with-icon">
                             <i class="auth-form__socials-icon fab fa-facebook-square"></i>
@@ -303,28 +314,30 @@
                         </a>
                     </div>
                 </form>
-                <form id="login-form" class="auth-form">
+                <!-- Login Form -->
+        
+                <form action="/login" id="login-form" class="auth-form" method="post">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
                             <div class="auth-form__heading">Đăng nhập</div>
                         </div>
-
+        
                         <div class="auth-form__groups">
                             <div class="auth-form__group">
-                                <input id="email" rule="email" type="text" class="auth-form__input"
-                                    placeholder="Email của bạn" />
+                                <input id="username" rule="username" type="text" class="auth-form__input" placeholder="Username"
+                                    name="username" required />
                             </div>
                             <div class="auth-form__group">
                                 <input id="password" rule="password" type="password" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
+                                    placeholder="Mật khẩu của bạn" name="password" required />
                             </div>
                             <% if(flashMessages.loginMessage){ %>
-                                <p class="text-danger">
+                                <p class="text-danger" id="message">
                                     <%= flashMessages.loginMessage %>
                                 </p>
                                 <% } %>
                         </div>
-
+        
                         <div class="auth-form__aside">
                             <div class="auth-form__help">
                                 <a href="" class="auth-form__help-link auth-form__help-forgot">Quên mật khẩu</a>
@@ -332,19 +345,19 @@
                                 <a href="" class="auth-form__help-link">Cần trợ giúp?</a>
                             </div>
                         </div>
-
+        
                         <div class="auth-form__controls">
                             <button class="btn auth-form__controls-back me-2">TRỞ LẠI</button>
                             <button class="btn btn--primary">ĐĂNG NHẬP</button>
                         </div>
-
+        
                         <div class="auth-form__switch-wrapper">
                             <span class="auth-form__switch-text">Bạn chưa có tài khoản?</span>
                             <span class="auth-form__switch-btn">Đăng ký</span>
                         </div>
                     </div>
-
-
+        
+        
                     <div class="auth-form__socials">
                         <a href="" class="auth-form__socials--facebook btn btn--size-s btn--with-icon">
                             <i class="auth-form__socials-icon fab fa-facebook-square"></i>
@@ -365,9 +378,17 @@
     </div>
 </body>
 <script>
-    var message = "<%= flashMessages.loginMessage %>";
+    var message1 = "<%= flashMessages.loginMessage %>";
+    var message2 = "<%= flashMessages.registerMessage %>";
     function chooseProduct(id) {
         window.location.href = "/products/details/" + id;
+    }
+    function clickCart() {
+        if ("<%= user %>")
+            window.location.href = "/list-order";
+        else {
+            location.reload();
+        }
     }
     function hoverAva() {
         let modalProfile = document.querySelector('.js-option-profile');
@@ -412,15 +433,20 @@
         }
         const closeForm = () => {
 
+            const message = document.getElementById('message');
+            if (message)
+                message.remove();
             modalLayer.classList.remove('open');
             regForm.style.display = 'none';
             logForm.style.display = 'none';
 
         }
-        if (message) {
+        if (message1) {
             openForm(2);
         }
-
+        if (message2) {
+            openForm(1);
+        }
         regItem.addEventListener('click', () => openForm(1));
         logItem.addEventListener('click', () => openForm(2));
         modalLayer.addEventListener('click', closeForm);

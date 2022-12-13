@@ -25,35 +25,32 @@ let isLoggedCustomer = async (req, res, next) => {
 }
 let handleRegister = async (req, res) => {
     // syntax validation
-    console.log(req.body)
+    //console.log(req.body)
     if (!ajv.validate(registerSchema, req.body)) {
-        req.flash('registerMessage', 'Đăng ký thất bại')
+        req.flash('registerMessage', 'Vui lòng kiểm tra lại thông tin đăng kí')
         return res.redirect('/');
     }
     const { username, email, password, confirmPassword } = req.body;
-    // if(!username || !email || !password || confirmPassword)
-    //     return;
-    if (password !== confirmPassword) {
-        req.flash('registerMessage', 'Mật khẩu không trùng')
+    if (username.length < 6) {
+        req.flash('registerMessage', 'Username phải có ít nhất 6 ký tự ')
         return res.redirect('/');
     }
     if (password.length < 6) {
         req.flash('registerMessage', 'Mật khẩu phải có ít nhất 6 ký tự ')
         return res.redirect('/');
     }
-    if (username.length < 6) {
-        req.flash('registerMessage', 'Username phải có ít nhất 6 ký tự ')
+    if (password !== confirmPassword) {
+        req.flash('registerMessage', 'Mật khẩu không trùng')
         return res.redirect('/');
     }
-    
-    console.log("register");
 
-    await authService.register(username, email, password);
-    console.log("register2");
-
-
-    res.redirect('/');
-    return res.render('home.ejs');
+    const result = await authService.register(username, email, password);
+    if (result) {
+        req.flash('registerMessage', result)
+        return res.redirect('/');
+    }
+    req.flash('registerMessage', 'Đăng kí thành công!!!')
+    return res.redirect('/');
 }
 let logout = (req, res) => {
     req.logout(function (err) {
