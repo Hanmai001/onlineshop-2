@@ -16,7 +16,7 @@ const initUserRoute = (app) => {
     //truyền thso vào url
     router.get('/products/details/:id', authController.isLoggedCustomer, userController.getDetailProductPage);
     router.get('/list-order', authController.isLoggedCustomer, userController.getListOrderPage);
-    router.get('/my-profile/profile', authController.isLoggedCustomer, userController.getProfilePage);
+    router.get('/my-profile/:id', authController.isLoggedCustomer, userController.getProfilePage);
     router.get('/my-profile/change-password', authController.isLoggedCustomer, userController.getUpdatePasswordPage);
     router.get('/my-profile/list-orders-status', authController.isLoggedCustomer, userController.getListOrderStatusPage);
     router.get('/payment', authController.isLoggedCustomer, userController.getPaymentPage);
@@ -33,6 +33,7 @@ const initUserRoute = (app) => {
                 res.redirect('/');
         });
     router.get('/logout', authController.logout);
+    router.post('/my-profile/:id/update-info', userController.updateInformation)
     //Web của ta bđau = '/', truyền router vào
     return app.use('/', router);
 }

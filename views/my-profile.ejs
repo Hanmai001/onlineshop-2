@@ -24,7 +24,8 @@
                         <i class="fa-brands fa-instagram text-white fs-5"></i>
                     </div>
                     <div class="col-6 text-end user-option">
-                        <img src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="" width="30px" height="30px">
+                        <img src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="" width="30px"
+                            height="30px">
                         <ul class="text-white ms-2 nav-profile">
                             <li class="js-option-profile">
                                 <%= user.username %>
@@ -34,7 +35,7 @@
                                         <li><a href="/logout">Đăng xuất</a></li>
                                     </ul>
                             </li>
-            
+
                         </ul>
                     </div>
                 </div>
@@ -54,12 +55,12 @@
                             <span>542</span>
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
-            
+
                     </div>
                 </div>
             </header>
         </form>
-        
+
         <div class="row content p-0 mx-0">
             <!-- OPTIONS -->
             <div class="col-2 filter px-0">
@@ -86,12 +87,10 @@
                         <span class="px-4">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
                     </div>
                     <div class="body-card row pb-5">
-                        <form action="" class="row">
+                        <form action="/my-profile/<%= user.id %>/update-info" method="post" class="row">
                             <div class="col-3 avatar text-center">
-                                <img class="mt-4"
-                                    src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>"
-                                    alt="">
-                                <input type="file" name="profile_pic" id="profile-file" hidden>
+                                <img class="mt-4" src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="">
+                                <input type="file" id="profile-file" name="updateAva" hidden>
                                 <div class="mt-3">
                                     <label for="profile-file">Chọn Ảnh</label>
                                 </div>
@@ -105,25 +104,33 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="fullname-profile">Tên</label>
-                                    <input type="text" id="fullname-profile" value="<%= user.fullname %>">
+                                    <input type="text" id="fullname-profile" value="<%= user.fullname %>"
+                                        name="updateFullname">
                                 </div>
                                 <div class="mb-4">
                                     <label for="email-profile">Email</label>
-                                    <input type="text" id="email-profile" value="<%= user.email %>">
+                                    <input type="email" id="email-profile" value="<%= user.email %>" name="updateEmail">
                                 </div>
                                 <div class="mb-4">
                                     <label for="phone-profile">SĐT</label>
-                                    <input type="text" id="phone-profile" value="<%= user.phone %>">
+                                    <input type="text" id="phone-profile" value="<%= user.phone %>" name="updatePhone">
                                 </div>
                                 <div class="mb-4 sex-profile">
                                     <label>Giới tính</label>
                                     <label for="female">Nữ</label>
-                                    <input type="radio" id="female" name="sex" value="female">
+                                    <input type="radio" id="female" name="updateSex" value="female">
                                     <label for="male">Nam</label>
-                                    <input type="radio" id="male" name="sex" value="male">
+                                    <input type="radio" id="male" value="male" name="updateSex">
                                     <label for="sex-other">Khác</label>
-                                    <input type="radio" id="sex-other" name="sex" value="sex-other">
+                                    <input type="radio" id="sex-other" value="sexOther" name="updateSex">
                                 </div>
+                                <% if(flashMessages.updateProfileMsg){ %>
+                                    <div class="mb-4 ">
+                                        <p class="text-danger">
+                                            <%= flashMessages.updateProfileMsg %>
+                                        </p>
+                                    </div>
+                                    <% } %>
                             </div>
                             <div class="text-center">
                                 <input class="py-2 px-5" type="submit" value="Lưu">
@@ -145,11 +152,15 @@
 <script>
     var radioFemale = document.getElementById('female');
     var radioMale = document.getElementById('male');
+    var radioOther = document.getElementById('sex-other');
     if ("<%= user.sex %>" === 'Nữ') {
         radioFemale.setAttribute("checked", "");
     }
     else if ("<%= user.sex %>" === 'Nam') {
-            radioMale.setAttribute("checked", "");
+        radioMale.setAttribute("checked", "");
+    }
+    else if ("<%= user.sex %>" === 'Khác') {
+        radioOther.setAttribute("checked", "");
     }
 
     function handleForms() {
@@ -170,4 +181,5 @@
     handleForms();
 
 </script>
+
 </html>

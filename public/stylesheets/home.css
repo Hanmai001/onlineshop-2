@@ -430,8 +430,10 @@ input[type="password"] {
     margin-top: 35px;
 }
 
-.home .auth-form__controls>button {
+.home .auth-form__controls>input {
     height: 36px;
+    width: 100px;
+    border: 1px solid #8d8d8d;
     /* line-height: 36px; */
 }
 
