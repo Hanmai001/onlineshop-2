@@ -15,7 +15,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static('public'));
 
 //Cau hinh view engine = ejs
 app.set("view engine", "ejs");
@@ -44,6 +44,7 @@ app.use(function (req, res, next) {
 
 initUserRoute(app);
 initAdminRoute(app);
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

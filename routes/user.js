@@ -1,9 +1,35 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const appRoot = require('app-root-path');
 
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const passport = require('../passport');
+
+//Middleware
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, appRoot + '/public/images');
+    },
+
+    // By default, multer removes file extensions so let's add them back
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+//Ham để check file
+const imageFilter = function (req, file, cb) {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+        req.fileValidationError = 'Only image files are allowed!';
+        return cb(null, false);
+    }
+    cb(null, true);
+};
+const upload = multer({ storage: storage, fileFilter: imageFilter });
 
 //Khoi tao web router
 const initUserRoute = (app) => {
@@ -33,7 +59,17 @@ const initUserRoute = (app) => {
                 res.redirect('/');
         });
     router.get('/logout', authController.logout);
-    router.post('/my-profile/:id/update-info', userController.updateInformation);
+    router.post('/my-profile/:id/update-info', upload.single('updateAva'), (req, res, next) => {
+        //nhận dữ liệu từ form
+        const file = req.file;
+        // Kiểm tra nếu không phải dạng file thì báo lỗi
+        if (!file) {
+            req.flash('updateProfileMsg', 'Upload ảnh thất bại.');
+            return res.redirect(`/my-profile/${res.locals.user.id}`);
+        }
+        else
+            next();
+    }, userController.updateInformation);
     router.post('/change-password/:id/update-password', userController.updatePassword);
     //Web của ta bđau = '/', truyền router vào
     return app.use('/', router);

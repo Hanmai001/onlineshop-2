@@ -87,7 +87,7 @@
                         <span class="px-4">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
                     </div>
                     <div class="body-card row pb-5">
-                        <form action="/my-profile/<%= user.id %>/update-info" method="post" class="row">
+                        <form action="/my-profile/<%= user.id %>/update-info" method="post" class="row" enctype="multipart/form-data">
                             <div class="col-3 avatar text-center">
                                 <img class="mt-4" src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>" alt="">
                                 <input type="file" id="profile-file" name="updateAva" hidden>

@@ -1,4 +1,3 @@
-const e = require('connect-flash');
 const productService = require('../model/productService');
 const userService = require('../model/userService');
 const authService = require('../model/authService');
@@ -62,12 +61,12 @@ let getProfilePage = async (req, res) => {
 }
 let updateInformation = async (req, res) => {
     const {
-        updateAva: ava,
         updateFullname: fullname,
         updateEmail: email,
         updatePhone: phone,
         updateSex: sex
     } = req.body;
+    const ava = '/images/' + req.file.filename;
     //console.log(req.body)
     const idUser = req.params.id;
     if (phone.length > 11) {
@@ -75,7 +74,7 @@ let updateInformation = async (req, res) => {
         return res.redirect(`/my-profile/${idUser}`);
     }
 
-    const result = await userService.updateProfile(req.body, idUser);
+    const result = await userService.updateProfile(req.body, ava, idUser);
     //console.log(res.locals.user);
     if (result) {
         if (ava)
@@ -96,7 +95,6 @@ let updateInformation = async (req, res) => {
     }
     req.flash('updateProfileMsg', 'Kiểm tra lại thông tin cập nhật.');
     return res.redirect(`/my-profile/${idUser}`);
-
 }
 let getUpdatePasswordPage = async (req, res) => {
     return res.render('change-password.ejs')
@@ -135,6 +133,7 @@ let updatePassword = async (req, res) => {
     req.flash('updatePassMsg', 'Đổi mật khẩu thất bại.');
     return res.redirect(`/change-password/${idUser}`);
 }
+
 let getListOrderStatusPage = async (req, res) => {
     return res.render('status-orders.ejs')
 }
@@ -151,6 +150,6 @@ module.exports = {
     getListOrderStatusPage,
     getPaymentPage,
     updateInformation,
-    updatePassword
+    updatePassword,
 
 }
