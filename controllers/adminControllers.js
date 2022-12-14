@@ -26,24 +26,27 @@ let getChangePassword = (req, res) => {
     return res.render('change-password-admin.ejs')
 }
 let updateInformation = async (req, res) => {
+    console.log(req.file);
+    const idUser = req.params.id;
+    let ava = res.locals.user.ava;
+    if (req.file) {
+        ava = '/images/' + req.file.filename;
+    }
     const {
-        updateAva: ava,
         updateFullname: fullname,
         updateEmail: email,
         updatePhone: phone,
         updateSex: sex
     } = req.body;
-
-    const idUser = req.params.id;
     if (phone.length > 11) {
         req.flash('updateProfileMsg', 'SĐT phải nhỏ hơn 12 kí tự.');
         return res.redirect(`/adminProfile/${idUser}`);
     }
 
-    const result = await adminService.updateProfile(req.body, idUser);
+    const result = await adminService.updateProfile(req.body, ava, idUser);
     //console.log(res.locals.user);
     if (result) {
-        if (ava)
+        if (req.file && ava)
             res.locals.user.ava = ava;
         if (fullname)
             res.locals.user.fullname = fullname;

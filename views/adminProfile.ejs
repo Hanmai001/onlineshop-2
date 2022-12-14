@@ -113,12 +113,12 @@
       <div class="col py-3">
         <div class="container rounded bg-white mt mb-5">
           <div class="row">
-            <form action="/adminProfile/<%=user.id %>/update-info" method="post" class="row">
+            <form action="/adminProfile/<%=user.id %>/update-info" method="post" class="row" enctype="multipart/form-data">
               <div class="col-md-3 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5 avatar">
                   <img class="rounded-circle mt-5" width="150px"
                     src="<%= user.ava ? user.ava : '/images/profile-icon.png' %>">
-                  <input type="file" name="updateAva" id="profile-file" hidden>
+                  <input type="file" name="update-ava" id="profile-file" hidden>
                   <div class="mt-3">
                     <label for="profile-file">Chọn Ảnh</label>
                   </div>
@@ -153,11 +153,9 @@
                       <input type="radio" id="sex-other" name="updateSex" value="sexOther">
                     </div>
                     <% if(flashMessages.updateProfileMsg){ %>
-                      <div class="mb-4 ">
-                        <p class="text-danger">
-                          <%= flashMessages.updateProfileMsg %>
-                        </p>
-                      </div>
+                      <p class="text-danger" id="message">
+                        <%= flashMessages.updateProfileMsg %>
+                      </p>
                       <% } %>
                   </div>
                   <div class="mt-5 text-center">
@@ -182,6 +180,9 @@
     crossorigin="anonymous"></script>
 </body>
 <script>
+  const message = document.getElementById('message');
+  if (message)
+    message.remove();
   var radioFemale = document.getElementById('female');
   var radioMale = document.getElementById('male');
   var radioOther = document.getElementById('sex-other');

@@ -59,22 +59,11 @@ const initUserRoute = (app) => {
                 res.redirect('/');
         });
     router.get('/logout', authController.logout);
-    router.post('/my-profile/:id/update-info', upload.single('updateAva'), (req, res, next) => {
-        //nhận dữ liệu từ form
-        const file = req.file;
-        // Kiểm tra nếu không phải dạng file thì báo lỗi
-        if (!file) {
-            req.flash('updateProfileMsg', 'Upload ảnh thất bại.');
-            return res.redirect(`/my-profile/${res.locals.user.id}`);
-        }
-        else
-            next();
-    }, userController.updateInformation);
+    router.post('/my-profile/:id/update-info', upload.single('update-ava'), userController.updateInformation);
     router.post('/change-password/:id/update-password', userController.updatePassword);
     //Web của ta bđau = '/', truyền router vào
     return app.use('/', router);
 }
 
-//module.export = initWebRoute;
-export default initUserRoute;
+module.exports = initUserRoute;
 

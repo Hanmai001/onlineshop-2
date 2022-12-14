@@ -60,15 +60,20 @@ let getProfilePage = async (req, res) => {
     return res.render('my-profile.ejs');
 }
 let updateInformation = async (req, res) => {
+    const idUser = req.params.id;
+    let ava = res.locals.user.ava;
+    if (req.file) {
+        ava = '/images/' + req.file.filename;
+    }
     const {
         updateFullname: fullname,
         updateEmail: email,
         updatePhone: phone,
         updateSex: sex
     } = req.body;
-    const ava = '/images/' + req.file.filename;
+    
     //console.log(req.body)
-    const idUser = req.params.id;
+   
     if (phone.length > 11) {
         req.flash('updateProfileMsg', 'SĐT phải nhỏ hơn 12 kí tự.');
         return res.redirect(`/my-profile/${idUser}`);
@@ -77,7 +82,7 @@ let updateInformation = async (req, res) => {
     const result = await userService.updateProfile(req.body, ava, idUser);
     //console.log(res.locals.user);
     if (result) {
-        if (ava)
+        if (req.file && ava)
             res.locals.user.ava = ava;
         if (fullname)
             res.locals.user.fullname = fullname;

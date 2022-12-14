@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const appRoot = require('app-root-path');
 const db = require('../config/connectDB');
 
 let updateProfile = async (data, ava, idUser) => {

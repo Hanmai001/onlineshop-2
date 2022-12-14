@@ -1,9 +1,8 @@
 const db = require('../config/connectDB');
 const bcrypt = require('bcryptjs');
 
-let updateProfile = async (data, idUser) => {
+let updateProfile = async (data, ava, idUser) => {
     const {
-        updateAva: ava,
         updateFullname: fullname,
         updateEmail: email,
         updatePhone: phone,
